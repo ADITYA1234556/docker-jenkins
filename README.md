@@ -81,3 +81,11 @@
    - Create Multi-Branch Pipeline Job:
      - Go to Jenkins Dashboard > New Item and select Multi-branch Pipeline
      - Name the pipeline and click OK
+   - Configure GitHub Repository and Branches
+     - In Branch Sources, add GitHub and specify the repository URL
+     - Configure branch patterns to detect dev, staging, and main
+   - Specify Jenkinsfile Location
+     - Under Build Configuration, set it to by Jenkinsfile
+
+4. **Define Jenkinsfile with Email Notification Step**
+   - 
