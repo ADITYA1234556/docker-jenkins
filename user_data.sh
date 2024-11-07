@@ -1,4 +1,7 @@
 #!/bin/bash
+sudo apt-get update
+# Install Java
+sudo apt-get install -y openjdk-17-jdk
 # Add Docker's official GPG key:
 sudo apt-get update
 sudo apt-get install ca-certificates curl
