@@ -17,6 +17,11 @@
      -v /var/run/docker.sock:/var/run/docker.sock \
      jenkins/jenkins
      ```
+   - Ensure you give the folder on host machine right permissions so that Jenkins will be able to write to the location /tmp/jenkins_home
+     ```bash
+      chown -R 1000:1000 /tmp/jenkins_home
+      #id of jenkins user is 1000 in official image
+     ```
 
 3. **Set Up Jenkins**
    - Enter the Jenkins container:
@@ -44,7 +49,8 @@
     - Host another Ec2 and passing the user_data.sh to install docker
 
 2. **Configure Master Slave by creating a ssh key-pair in master and using it with slave**
-    - Create a key pair in Jenkins Master from inside the container "ssh-keygen -t rsa -b 4096 -C "jenkins-agent-key"
+    - Create a key pair in Jenkins Master from inside the container "ssh-keygen -t rsa -b 4096 -C "jenkins-agent-key" -f /tmp/jenkins
+    - -f flag is to avoid permission denied error. It will directly save it in /tmp directory where jenkins user will have permissions to write.
     - Copy the public key from within the Jenkins container to the Jenkins Slave machine "scp -i connect/privatekey filetocopy/jenkins-key.pub ubuntu@18.132.47.9:/home/ubuntu"
     - Add the contents of the public key from /home/ubuntu/jenkins-key.pub to ~/.ssh/authorized_keys, Now we can use the private key from master Jenkins to connect to slave
 
