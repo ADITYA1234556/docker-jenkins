@@ -55,4 +55,29 @@
       - **Credentials:** Add SSH private key credentials
       - **Pre-requisites** The Java version of Master Jenkins and Slave Jenkins should be the same
 
+## Configure IAM Role for EC2 Instances
 
+1. **Create an IAM role with the following permissions**
+   - AmazonEC2ContainerRegistryFullAccess
+   - SecretsManagerReadWrite
+
+2. **Attach the role to both Master Jenkins and Slave Jenkins**
+
+## Configure Jenkins Multi-Branch Pipeline Job with Automatic Trigger and Email Notification
+
+1. **Setup GitHub WebHook to automatically trigger the job when events are pushed to GitHub Repo**
+   - Go to GitHub Repository settings -> Webhooks
+   - Add the Payload url like http://<Jenkins-Master-EC2-Public-IP>:<jenkins-service-port>/github-webhook/
+   - Configure the webhook to trigger "ONLY FOR PUSH EVENT"
+   - Verify recent deliveries and make sure connection is successful
+
+2. **Configure SMTP Settings for Email Notification**
+   - Go to Jenkins Dashboard > Manage Jenkins > Configure System
+   - Set up SMTP Server (e.g., smtp.gmail.com for Gmail) and configure Email Extension Plugin.
+   - Pass in your Username and Gmail App password and check connectivity
+   - Save settings
+
+3. **Create Multi-Branch Pipeline in Jenkins**
+   - Create Multi-Branch Pipeline Job:
+     - Go to Jenkins Dashboard > New Item and select Multi-branch Pipeline
+     - Name the pipeline and click OK
