@@ -1,3 +1,5 @@
+# This project covers end-to-end automation, notification, and multi-environment Docker deployments on EC2 instances, with Jenkins in Docker and agent setup.
+
 ## Docker and Jenkins Setup
 
 1. **Install Docker in Ubuntu machine**  
