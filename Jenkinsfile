@@ -101,7 +101,7 @@ pipeline {
                         targetHost = '35.178.153.62'
                     }
                     sshagent(['ec2-ssh-key']){
-                    sh "ssh -o StrictHostKeyChecking=no -l ubuntu ${targetHost} whoami"
+                    sh "ssh -tt -o StrictHostKeyChecking=no ubuntu@${targetHost} whoami"
                     }
                 }
             }
