@@ -1,5 +1,8 @@
 pipeline {
     agent { label 'slave' }
+    tools {
+        git 'Git 2.34.1'
+    }
 
     environment {
         ECR_REPO = '866934333672.dkr.ecr.eu-west-2.amazonaws.com/adityaimages'
