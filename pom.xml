@@ -13,6 +13,7 @@
         <sonar.projectKey>uk.co.theaditya:docker-jenkins</sonar.projectKey>
         <sonar.projectName>Docker Jenkins Website</sonar.projectName>
         <sonar.projectVersion>1.0</sonar.projectVersion>
+        <sonar.organization>ADITYA1234556</sonar.organization>
     </properties>
 
     <build>
