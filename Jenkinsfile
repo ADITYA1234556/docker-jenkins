@@ -54,7 +54,7 @@ pipeline {
             steps {
                 script {
                     withSonarQubeEnv('SonarQubeServer') {
-                        sh 'mvn sonar:sonar -Dsonar.organization=ADITYA1234556'
+                        sh 'mvn sonar:sonar -Dsonar.organization=aditya1234556'
                     }
                 }
             }
