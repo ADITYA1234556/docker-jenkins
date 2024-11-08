@@ -89,16 +89,15 @@ pipeline {
 //         }
         stage('SSH Steps Rocks!') {
             steps {
-                withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'SSH_KEY', passphraseVariable: '', usernameVariable: 'userName')]) {
-
-                    script {
-                        echo "User: ${userName}, Key: ${SSH_KEY}, Host: 35.178.153.62" // Debugging line to confirm values
-                        // Run the SSH command to check the username on the remote host
-                        sh """
-                            ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ${userName}@35.178.153.62 whoami
-                        """
-                    }
-                }
+               script {
+                    // Securely passing the SSH key without using Groovy string interpolation
+                    sh '''
+                        echo "$SSH_KEY" > ~/.ssh/id_rsa
+                        chmod 600 ~/.ssh/id_rsa
+                        # Run any deployment commands here
+                        nohup ssh -o StrictHostKeyChecking=no ubuntu@35.178.153.62 'whoami' &
+                    '''
+               }
             }
         }
         stage('Deploy to Environment test') {
