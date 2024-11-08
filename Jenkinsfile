@@ -99,7 +99,7 @@ pipeline {
                     } else if (env.BRANCH_NAME == 'master') {
                         targetHost = '35.178.153.62'
                     }
-                    sshagent([SSH_KEY]){
+                    sshagent([${SSH_KEY}]){
                     sh """
                         ssh -o StrictHostKeyChecking=no ubuntu@${targetHost} << EOF
                         pwd
