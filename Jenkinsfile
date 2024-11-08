@@ -102,6 +102,7 @@ pipeline {
                     withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'SSH_KEY')]) {
                         sshagent([SSH_KEY]){
                             sh """
+                                echo 'Checking the loaded SSH key' && ls -al ${SSH_KEY}
                                 ssh -v -o StrictHostKeyChecking=no ubuntu@${targetHost} "echo SSH Key loaded successfully"
                             """
                         }
