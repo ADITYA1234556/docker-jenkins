@@ -93,8 +93,6 @@ pipeline {
 
                     script {
                         echo "User: ${userName}, Key: ${SSH_KEY}, Host: 35.178.153.62" // Debugging line to confirm values
-                        echo "Remote config: ${remote}" // Debugging line to check the remote object
-
                         // Run the SSH command to check the username on the remote host
                         sh """
                             ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ${userName}@35.178.153.62 whoami
