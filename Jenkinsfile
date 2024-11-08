@@ -79,13 +79,13 @@ pipeline {
                 }
             }
         }
-        stage('Test SSH_KEY'){
-            steps{
-                withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'SSH_KEY')]) {
-                    sh 'echo "SSH Key loaded successfully"'
-                }
-            }
-        }
+//         stage('Test SSH_KEY'){
+//             steps{
+//                 withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'SSH_KEY')]) {
+//                     sh 'echo "SSH Key loaded successfully"'
+//                 }
+//             }
+//         }
         stage('Deploy to Environment') {
             steps {
                 script {
