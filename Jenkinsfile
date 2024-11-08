@@ -9,6 +9,7 @@ pipeline {
         TAG = "${env.BRANCH_NAME}-${env.BUILD_ID}"
         AWS_REGION = "eu-west-2"
         SSH_KEY = credentials('ec2-ssh-key')
+        MASKED_SSH_KEY = '/tmp/ssh-*'
     }
 
     stages {
