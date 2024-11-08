@@ -101,6 +101,8 @@ pipeline {
                     }
                     sshagent(['ec2-ssh-key']){
                         sh """
+                            echo \$#
+                            printenv
                             ssh -o StrictHostKeyChecking=no ubuntu@${targetHost} 'pwd'
                             ssh -o StrictHostKeyChecking=no ubuntu@${targetHost} 'uptime'
                         """
