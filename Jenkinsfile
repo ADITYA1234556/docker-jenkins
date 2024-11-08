@@ -62,7 +62,6 @@ pipeline {
         stage('Container Security Scan - Trivy') {
             steps {
                 script {
-                    sh "trivy db update"
                     sh "trivy image ${ECR_REPO}:${TAG}"
                 }
             }
