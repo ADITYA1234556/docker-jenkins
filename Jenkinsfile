@@ -111,7 +111,12 @@ pipeline {
                         targetHost = '35.178.153.62'
                     }
                     sshagent(['ec2-ssh-key']){
-                    sh "ssh -tt -o StrictHostKeyChecking=no ubuntu@${targetHost} whoami"
+                    sh """
+                    ssh-keyscan -H ${targetHost} >> ~/.ssh/known_hosts
+
+                    # Now use SSH to connect to the remote host and run the 'whoami' command
+                    ssh -tt -o StrictHostKeyChecking=no ubuntu@${targetHost} whoami
+                    """
                     }
                 }
             }
