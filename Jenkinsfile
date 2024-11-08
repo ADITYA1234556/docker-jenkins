@@ -93,14 +93,6 @@ pipeline {
 
                     script {
                         echo "User: ${userName}, Key: ${SSH_KEY}, Host: 35.178.153.62" // Debugging line to confirm values
-
-                        // Define the remote host configuration inside the script block
-                        def remote = [
-                            user: userName,
-                            identityFile: SSH_KEY,
-                            host: '35.178.153.62'
-                        ]
-
                         echo "Remote config: ${remote}" // Debugging line to check the remote object
 
                         // Run the SSH command to check the username on the remote host
