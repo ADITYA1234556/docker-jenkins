@@ -101,6 +101,8 @@ pipeline {
     post {
         always {
             cleanWs()  // Clean up workspace after the build
+            sh 'echo "Current branch: ${env.BRANCH_NAME}"'
+            git branch: "${env.BRANCH_NAME}", url: 'https://github.com/ADITYA1234556/docker-jenkins.git', credentialsId: 'github-token'
         }
     }
 }
