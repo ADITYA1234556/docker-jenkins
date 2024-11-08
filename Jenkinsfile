@@ -99,10 +99,12 @@ pipeline {
                     } else if (env.BRANCH_NAME == 'master') {
                         targetHost = '35.178.153.62'
                     }
-                    sshagent(['ec2-ssh-key']){
-                        sh """
-                            ssh -o StrictHostKeyChecking=no ubuntu@${targetHost}
-                        """
+                    withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'SSH_KEY')]){
+                        sshagent(['ec2-ssh-key']){
+                            sh """
+                                ssh -o StrictHostKeyChecking=no ubuntu@${targetHost}
+                            """
+                        }
                     }
                 }
             }
