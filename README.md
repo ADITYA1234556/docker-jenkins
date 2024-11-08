@@ -42,6 +42,9 @@
    - Email Extension
    - SonarQube
    - Trivy
+   - Docker pipeline
+   - AWS Steps
+
 
 ## Jenkins Slave Setup
 

@@ -50,6 +50,15 @@ pipeline {
                 }
             }
         }
+        stage('Static Code Analysis - SonarQube') {
+            steps {
+                script {
+                    withSonarQubeEnv('SonarQubeServer') {
+                        sh 'mvn sonar:sonar'
+                    }
+                }
+            }
+        }
     }
 }
 
