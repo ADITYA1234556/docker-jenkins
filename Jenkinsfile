@@ -88,19 +88,23 @@ pipeline {
 //             }
 //         }
         stage('SSH Steps Rocks!') {
-    steps {
-        withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'SSH_KEY', passphraseVariable: '', usernameVariable: 'userName')]) {
+            steps {
+                withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'SSH_KEY', passphraseVariable: '', usernameVariable: 'userName')]) {
 
-            script {
-                // Define the remote host configuration inside the script block
-                def remote = [
-                    user: userName,         // Use the usernameVariable set to 'ubuntu'
-                    identityFile: SSH_KEY,  // This will hold the private key file
-                    host: '35.178.153.62'   // The EC2 instance's IP address or DNS
-                ]
+                    script {
+                        echo "User: ${userName}, Key: ${SSH_KEY}, Host: 35.178.153.62" // Debugging line to confirm values
 
-                // Run the SSH command to check the username on the remote host
-                sshCommand remote: remote, command: 'whoami'
+                        // Define the remote host configuration inside the script block
+                        def remote = [
+                            user: userName,
+                            identityFile: SSH_KEY,
+                            host: '35.178.153.62'
+                        ]
+
+                        echo "Remote config: ${remote}" // Debugging line to check the remote object
+
+                        // Run the SSH command to check the username on the remote host
+                        sshCommand remote: remote, command: 'whoami'
                     }
                 }
             }
