@@ -30,6 +30,26 @@ pipeline {
                 }
             }
         }
+        stage('Push to ECR') {
+            steps {
+                withAWS(credentials: 'aws-credentials', region: "${AWS_REGION}")
+                {
+                    sh "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${env.ECR_REPO}"
+                    sh "docker push ${env.ECR_REPO}:${env.TAG}"
+                }
+            }
+                post {
+                success {
+                    // Send email notification after successful image push to ECR
+                    emailext(
+                        subject: "Jenkins Job - Docker Image Pushed to ECR Successfully",
+                        body: "Hello,\n\nThe Docker image '${env.IMAGE_NAME}:${env.TAG}' has been successfully pushed to ECR.\n\nBest regards,\nJenkins",
+                        recipientProviders: [[$class: 'DevelopersRecipientProvider']],
+                        to: "adityanavaneethan98@gmail.com"
+                    )
+                }
+            }
+        }
     }
 }
 
