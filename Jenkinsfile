@@ -100,12 +100,12 @@ pipeline {
                         targetHost = '35.178.153.62'
                     }
                     withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'SSH_KEY')]) {
-                    echo "SSH Key loaded to: ${SSH_KEY}"
                         sshagent(['ec2-ssh-key']){
                             sh """
-                                ssh -v -o StrictHostKeyChecking=no ubuntu@${targetHost}
+                                ssh -v -o StrictHostKeyChecking=no ubuntu@${targetHost} << EOF
                                 pwd
                                 uptime
+                                EOF
                             """
                         }
                     }
