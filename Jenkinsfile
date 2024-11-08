@@ -62,8 +62,19 @@ pipeline {
         stage('Container Security Scan - Trivy') {
             steps {
                 script {
-                    sh "trivy --timeout 1m image ${ECR_REPO}:${TAG}"
+                    sh "trivy --timeout 1m image ${ECR_REPO}:${TAG} > 'trivyscan.txt'"
+                    env.TRIVY_SCAN_RESULT = readFile(trivyscan.txt)
                 }
+            }
+            post {
+            success{
+                emailext(
+                subject: "Trivy scan result",
+                body: "Hello, \n Trivy scan result: ${env.TRIVY_SCAN_RESULT} \n Best regards, \n Jenkins",
+                recipientProviders: [[$class: 'DevelopersRecipientProvider']],
+                to: "adityanavaneethan98@gmail.com"
+                )
+            }
             }
         }
     }
