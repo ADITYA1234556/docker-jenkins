@@ -89,15 +89,20 @@ pipeline {
 //         }
         stage('SSH Steps Rocks!') {
             steps {
-               script {
-                    // Securely passing the SSH key without using Groovy string interpolation
+                script {
+                    // Store the SSH key securely and set appropriate permissions
                     sh '''
                         echo "$SSH_KEY" > ~/.ssh/id_rsa
                         chmod 600 ~/.ssh/id_rsa
-                        # Run any deployment commands here
+                        # Ensure the known hosts are configured for SSH to avoid prompts
+                        ssh-keyscan -H 35.178.153.62 >> ~/.ssh/known_hosts
+                    '''
+
+                    // Run the SSH command in the background with minimal arguments
+                    sh '''
                         nohup ssh -o StrictHostKeyChecking=no ubuntu@35.178.153.62 'whoami' &
                     '''
-               }
+                }
             }
         }
         stage('Deploy to Environment test') {
