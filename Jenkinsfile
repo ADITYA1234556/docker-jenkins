@@ -89,15 +89,15 @@ pipeline {
 //         }
         stage('SSH Steps Rocks!') {
             steps {
-                withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'SSH_KEY', passphraseVariable: '', usernameVariable: 'userName')]) {
-
-                    // Define the remote host configuration
+                withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'SSH_KEY', passphraseVariable: '', usernameVariable: 'userName')]){                    // Define the remote host configuration
+                    script{
                     def remote = [
                         user: userName,
                         identityFile: SSH_KEY,
                         host: '35.178.153.62',
                     ]
                     sshCommand remote: remote, command: 'whoami'
+                    }
                     }
                 }
             }
