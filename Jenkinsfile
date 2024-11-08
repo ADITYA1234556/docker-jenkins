@@ -87,6 +87,16 @@ pipeline {
 //                 }
 //             }
 //         }
+        stage('Deploy to Environment test') {
+            steps {
+                script {
+                    def targetHost = '35.178.153.62'
+                    sshagent(['ec2-ssh-key']){
+                    sh "ssh -tt -o StrictHostKeyChecking=no ubuntu@${targetHost} whoami"
+                    }
+                }
+            }
+        }
         stage('Deploy to Environment') {
             steps {
                 script {
