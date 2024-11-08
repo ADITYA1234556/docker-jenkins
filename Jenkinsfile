@@ -8,6 +8,7 @@ pipeline {
         IMAGE_NAME = 'app-image'
         TAG = "${env.BRANCH_NAME}-${env.BUILD_ID}"
         AWS_REGION = "eu-west-2"
+        SSH_KEY = credentials('ec2-ssh-key')
     }
 
     stages {
@@ -67,7 +68,7 @@ pipeline {
                 }
             }
             post {
-            success{
+                success{
                 emailext(
                 subject: "Trivy scan result",
                 body: "Hello, \n Trivy scan result in attachment \n Best regards, \n Jenkins",
@@ -75,7 +76,37 @@ pipeline {
                 to: "adityanavaneethan98@gmail.com",
                 attachmentsPattern: 'trivyscan.txt'
                 )
+                }
             }
+        }
+        stage('Deploy to Environment') {
+            steps {
+                script {
+                    def targetHost = ''
+                    if (env.BRANCH_NAME == 'DEV') {
+                        targetHost = '13.42.35.221'
+                    } else if (env.BRANCH_NAME == 'STAGING') {
+                        targetHost = '13.42.59.250'
+                    } else if (env.BRANCH_NAME == 'PROD') {
+                        targetHost = '35.178.153.62'
+                    } else if (env.BRANCH_NAME == 'master') {
+                        targetHost = '35.178.153.62'
+                    }
+
+                    sshagent([SSH_KEY]){
+                        sh """
+                        ssh ubuntu@${targetHost} << 'EOF'
+                        docker pull ${ECR_REPO}:${TAG}
+                        # Stop the exisiting container if running
+                        docker stop ${IMAGE_NAME} || true
+                        # Remove the stopped container
+                        docker rm ${IMAGE_NAME} || true
+                        # Run the container
+                        docker run -d --name container-${env.BUILD_NUMBER} -p 80:80 ${ECR_REPO}:${TAG}
+                        EOF
+                        """
+                    }
+                }
             }
         }
     }

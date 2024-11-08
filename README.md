@@ -106,4 +106,6 @@
      - wget https://github.com/aquasecurity/trivy/releases/download/v0.57.0/trivy_0.57.0_Linux-64bit.deb
      - sudo dpkg -i trivy_0.57.0_Linux-64bit.deb
      - trivy --version
+     - trivy --timeout 10m image imagename
    ```
+   - The timeout will make sure trivy command gets enough time to download the dependencies
