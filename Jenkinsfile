@@ -70,9 +70,10 @@ pipeline {
             success{
                 emailext(
                 subject: "Trivy scan result",
-                body: "Hello, \n Trivy scan result: ${env.TRIVY_SCAN_RESULT} \n Best regards, \n Jenkins",
+                body: "Hello, \n Trivy scan result in attachment \n Best regards, \n Jenkins",
                 recipientProviders: [[$class: 'DevelopersRecipientProvider']],
-                to: "adityanavaneethan98@gmail.com"
+                to: "adityanavaneethan98@gmail.com",
+                attachmentsPattern: 'trivyscan.txt'
                 )
             }
             }
