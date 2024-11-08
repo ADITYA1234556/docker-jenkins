@@ -1,5 +1,6 @@
 pipeline {
-    agent { label 'slave2' }
+    agent { label 'slave' }
+
     tools {
     git 'Default'
     }
