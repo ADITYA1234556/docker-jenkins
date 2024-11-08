@@ -100,6 +100,7 @@ pipeline {
                         targetHost = '35.178.153.62'
                     }
                     withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'SSH_KEY')]) {
+                    echo "SSH Key loaded to: ${SSH_KEY}"
                         sshagent([SSH_KEY]){
                             sh """
                                 echo 'Checking the loaded SSH key' && ls -al ${SSH_KEY}
