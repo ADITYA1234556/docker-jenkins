@@ -104,7 +104,9 @@ pipeline {
                         echo "Remote config: ${remote}" // Debugging line to check the remote object
 
                         // Run the SSH command to check the username on the remote host
-                        sshCommand remote: remote, command: 'whoami'
+                        sh """
+                            ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no ${userName}@35.178.153.62 whoami
+                        """
                     }
                 }
             }
