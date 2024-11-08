@@ -100,6 +100,7 @@ pipeline {
                     } else if (env.BRANCH_NAME == 'master') {
                         targetHost = '35.178.153.62'
                     }
+                    sh "echo ubuntu@${targetHost}"
                     sshagent(['ec2-ssh-key']){
                     sh "ssh -tt -o StrictHostKeyChecking=no ubuntu@${targetHost} whoami"
                     }
