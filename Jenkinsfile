@@ -89,7 +89,6 @@ pipeline {
         stage('Deploy to Environment') {
             steps {
                 script {
-                    sh 'rm -rf ~/workspace/pipe_master@tmp/durable-*'
                     def targetHost = ''
                     if (env.BRANCH_NAME == 'DEV') {
                         targetHost = '13.42.35.221'
