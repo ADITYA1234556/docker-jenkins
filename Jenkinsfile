@@ -95,7 +95,7 @@ pipeline {
 
                     sshagent([SSH_KEY]){
                         sh """
-                        ssh -o StrictHostKeyChecking=no ubuntu@${targetHost} << 'EOF'
+                        ssh -o StrictHostKeyChecking=no ubuntu@${targetHost} << EOF
                         docker pull ${ECR_REPO}:${TAG}
                         # Stop the exisiting container if running
                         docker stop ${IMAGE_NAME} || true
