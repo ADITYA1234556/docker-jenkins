@@ -102,7 +102,7 @@ pipeline {
                     }
                     sshagent(['ec2-ssh-key']){
                     sh """
-                        ssh -o StrictHostKeyChecking=no ubuntu@${targetHost} > /dev/null 2>&1 << EOF
+                        ssh -o StrictHostKeyChecking=no -l ubuntu ${targetHost} << EOF
                         pwd
                         uptime
                         EOF
