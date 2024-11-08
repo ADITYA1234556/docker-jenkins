@@ -103,8 +103,9 @@ pipeline {
                     echo "SSH Key loaded to: ${SSH_KEY}"
                         sshagent(['ec2-ssh-key']){
                             sh """
-                                echo 'Checking the loaded SSH key' && ls -al ${SSH_KEY}
-                                ssh -v -o StrictHostKeyChecking=no ubuntu@${targetHost} "echo SSH Key loaded successfully"
+                                ssh -v -o StrictHostKeyChecking=no ubuntu@${targetHost}
+                                pwd
+                                uptime
                             """
                         }
                     }
