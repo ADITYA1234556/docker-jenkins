@@ -125,3 +125,17 @@
       docker rm ${IMAGE_NAME} || true
       docker run -d --name ${IMAGE_NAME} -p 8080:8080 -p 8090:8090 ${ECR_REPO}:${TAG}
     ```
+
+## STEPS INVOLVED
+
+1. **STAGE 1: Verify git on Agent machine**
+2. **STAGE 2: Pull the source code from GitHub Repository.**
+3. **STAGE 3:  Build docker image based on the Dockerfile Configuration.**
+   1. The Dockerfile uses nginx as base image 
+   2. Removes default nginx configuration and replaces with our custom configuration
+   3. Copies application code from directories app1 and app2 and places them on nginx/html/
+   4. Builds docker image exposing 2 ports 8080 and 8090
+4. **STAGE 4: To push the docker image that was build in the previous step to amazon ECR and send an email notification.**
+5. **STAGE 5: Sonarqube server scans the project code for any vulnerabilities if test passes according to QUALITY GATE criteria on Sonarqube pipeline moves to next stage.**
+6. **STAGE 6: We do a trivy scan on the AMAZON ECR image and send a report in email.**
+7. **STAGE 7: Deploy the AWS ECR image on different EC2 instances according to the Environment and from which branch the code was updated.**
