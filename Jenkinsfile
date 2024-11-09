@@ -55,7 +55,7 @@ pipeline {
             steps {
                 script {
                     sh "trivy --timeout 1m image ${ECR_REPO}:${TAG} > 'trivyscan.txt'"
-                    env.TRIVY_SCAN_RESULT = readFile('trivyscan.txt')
+//                     env.TRIVY_SCAN_RESULT = readFile('trivyscan.txt')
                 }
             }
         }
