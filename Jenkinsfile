@@ -50,6 +50,7 @@ pipeline {
                 }
             }
         }
+
         stage('Container Security Scan - Trivy') {
             steps {
                 script {
@@ -57,6 +58,7 @@ pipeline {
                     env.TRIVY_SCAN_RESULT = readFile('trivyscan.txt')
                 }
             }
+        }
 
         stage('Deploy to Environment test') {
             steps {
@@ -65,6 +67,7 @@ pipeline {
                 }
             }
         }
+
         stage('Deploy to Environment') {
             steps {
                 script {
