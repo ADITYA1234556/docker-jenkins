@@ -93,7 +93,7 @@ pipeline {
                 script {
                     def targetHost = ''
                     if (env.BRANCH_NAME == 'DEV') {
-                        targetHost = '13.42.35.221'
+                        targetHost = '13.42.5.135'
                     } else if (env.BRANCH_NAME == 'STAGING') {
                         targetHost = '35.179.105.161'
                     } else if (env.BRANCH_NAME == 'PROD') {
