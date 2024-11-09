@@ -102,15 +102,18 @@ pipeline {
                     } else if (env.BRANCH_NAME == 'master') {
                         targetHost = '35.178.153.62'
                     }
+                    withCredentials([usernamePassword(credentialsId: 'aws-ecr', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                     sshagent(['ec2-ssh-key']){
                     sh """
                     ssh -tt -o StrictHostKeyChecking=no ubuntu@${targetHost} << EOF
+                    aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin ${env.ECR_REPO}
                     docker pull ${ECR_REPO}:${TAG}
                     docker stop ${IMAGE_NAME} || true
                     docker rm ${IMAGE_NAME} || true
                     docker run -d --name ${IMAGE_NAME} -p 80:80 ${ECR_REPO}:${TAG}
                     EOF
                     """
+                    } //withCredentials
                     } //sshagent
                 } //script
             } //steps
