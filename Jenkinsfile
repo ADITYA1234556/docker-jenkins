@@ -40,16 +40,16 @@ pipeline {
                     sh "docker push ${env.ECR_REPO}:${env.TAG}" //for push we use with credentials
                 } //withCredentials
             } //steps
-//             post {
-//                 success {
-//                     emailext(
-//                         subject: "Jenkins Job - Docker Image Pushed to ECR Successfully",
-//                         body: "Hello,\n\nThe Docker image '${env.IMAGE_NAME}:${env.TAG}' has been successfully pushed to ECR.\n\nBest regards,\nJenkins",
-//                         recipientProviders: [[$class: 'DevelopersRecipientProvider']],
-//                         to: "adityanavaneethan98@gmail.com"
-//                     )
-//                 } //success
-//             } //post
+            post {
+                success {
+                    emailext(
+                        subject: "Jenkins Job - Docker Image Pushed to ECR Successfully",
+                        body: "Hello,\n\nThe Docker image '${env.IMAGE_NAME}:${env.TAG}' has been successfully pushed to ECR.\n\nBest regards,\nJenkins",
+                        recipientProviders: [[$class: 'DevelopersRecipientProvider']],
+                        to: "m.ehtasham.azhar@gmail.com"
+                    )
+                } //success
+            } //post
         } //stage
         stage('Static Code Analysis - SonarQube') {
             steps {
@@ -67,17 +67,17 @@ pipeline {
                     sh "trivy --timeout 1m image ${ECR_REPO}:${TAG} > 'trivyscan.txt'"
                 } //script
             } //steps
-//             post {
-//                 success{
-//                     emailext(
-//                         subject: "Trivy scan result",
-//                         body: "Hello, \n Trivy scan result in attachment \n Best regards, \n Jenkins",
-//                         recipientProviders: [[$class: 'DevelopersRecipientProvider']],
-//                         to: "adityanavaneethan98@gmail.com",
-//                         attachmentsPattern: 'trivyscan.txt'
-//                     )
-//                 } //success
-//             } //post
+            post {
+                success{
+                    emailext(
+                        subject: "Trivy scan result",
+                        body: "Hello, \n Trivy scan result in attachment \n Best regards, \n Jenkins \n ",
+                        recipientProviders: [[$class: 'DevelopersRecipientProvider']],
+                        to: "m.ehtasham.azhar@gmail.com",
+                        attachmentsPattern: 'trivyscan.txt'
+                    )
+                } //success
+            } //post
         } //stage
 
         stage('Deploy to Environment test') {
