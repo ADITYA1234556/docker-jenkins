@@ -42,6 +42,9 @@
    - Email Extension
    - SonarQube
    - Trivy
+   - Docker pipeline
+   - AWS Steps
+
 
 ## Jenkins Slave Setup
 
@@ -96,4 +99,13 @@
      - Under Build Configuration, set it to by Jenkinsfile
 
 4. **Define Jenkinsfile with Email Notification Step**
-   - 
+   - In the Jenkinsfile replace the Environment variables with yours.
+   - Configure correct login details in Manage Jenkins -> Credentials
+   - Install trivy on worker machines
+   ```bash
+     - wget https://github.com/aquasecurity/trivy/releases/download/v0.57.0/trivy_0.57.0_Linux-64bit.deb
+     - sudo dpkg -i trivy_0.57.0_Linux-64bit.deb
+     - trivy --version
+     - trivy --timeout 10m image imagename
+   ```
+   - The timeout will make sure trivy command gets enough time to download the dependencies
