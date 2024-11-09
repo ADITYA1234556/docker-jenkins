@@ -37,7 +37,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'aws-ecr', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')])
                 {
                     sh "aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin ${env.ECR_REPO}"
-                    sh "docker push ${env.ECR_REPO}:${env.TAG}"
+                    sh "docker push ${env.ECR_REPO}:${env.TAG}" //for push we use with credentials
                 } //withCredentials
             } //steps
             post {
@@ -96,11 +96,11 @@ pipeline {
                     if (env.BRANCH_NAME == 'DEV') {
                         targetHost = '13.42.35.221'
                     } else if (env.BRANCH_NAME == 'STAGING') {
-                        targetHost = '13.42.59.250'
+                        targetHost = '35.179.105.161'
                     } else if (env.BRANCH_NAME == 'PROD') {
-                        targetHost = '35.178.153.62'
+                        targetHost = '35.179.95.72'
                     } else if (env.BRANCH_NAME == 'master') {
-                        targetHost = '35.178.153.62'
+                        targetHost = '35.179.95.72'
                     }
                     withCredentials([usernamePassword(credentialsId: 'aws-ecr', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                     sshagent(['ec2-ssh-key']){
