@@ -96,4 +96,32 @@
      - Under Build Configuration, set it to by Jenkinsfile
 
 4. **Define Jenkinsfile with Email Notification Step**
-   - 
+   - In the Jenkinsfile replace the Environment variables with yours.
+   - Configure correct login details in Manage Jenkins -> Credentials -> add the following credentials
+     - Sonarqube token ('sonartoken')
+     - Github-Token
+     - AWS CLI Access key and Secret access key ('aws-ecr')
+     - Private SSH key pair for EC2 instance ('ec2-ssh-key')
+     - Gmail Username and App password ('gmailcreds')
+   - Add the following in Manage Jenkins -> System
+     - Sonarqube server details -> pass the authentication details -> (Name: 'SonarQubeServer', Auth token: 'sonartoken')
+     - E-mail Notification -> pass the authentication details -> ('gmailcreds')
+   - Install trivy on worker machines
+   ```bash
+      wget https://github.com/aquasecurity/trivy/releases/download/v0.57.0/trivy_0.57.0_Linux-64bit.deb
+      sudo dpkg -i trivy_0.57.0_Linux-64bit.deb
+      trivy --version
+      trivy --timeout 10m image imagename
+   ```
+   - The timeout will make sure trivy command gets enough time to download the dependencies
+   - Create 3 EC2 instances for different environments and pass their IP addresses in stage('Deploy to Environment')
+   - Install awscli on these instances because we will use awscli command to talk to AWS ECR to get a temporary token
+   ```bash
+      # aws ecr gets a temporary token from aws in eu-west-2 which will be used by docker without rquiring permanent creds
+      # docker login --username AWS --password-stdin //temporary token ${ECRREPO}
+      aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin ${env.ECR_REPO}
+      docker pull ${ECR_REPO}:${TAG}
+      docker stop ${IMAGE_NAME} || true
+      docker rm ${IMAGE_NAME} || true
+      docker run -d --name ${IMAGE_NAME} -p 8080:8080 -p 8090:8090 ${ECR_REPO}:${TAG}
+    ```
