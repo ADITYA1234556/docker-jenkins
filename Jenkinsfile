@@ -105,7 +105,7 @@ pipeline {
                     sshagent(['ec2-ssh-key']){
                     sh """
                     ssh -tt -o StrictHostKeyChecking=no ubuntu@${targetHost} << EOF
-                    sudo apt install -y awscli
+                    sudo apt install -y awscli || exit 1  # Exit if installation fails
                     aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin ${env.ECR_REPO}
                     docker pull ${ECR_REPO}:${TAG}
                     docker stop ${IMAGE_NAME} || true
