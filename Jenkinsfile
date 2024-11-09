@@ -40,17 +40,6 @@ pipeline {
                     sh "docker push ${env.ECR_REPO}:${env.TAG}"
                 }
             }
-                post {
-                success {
-                    // Send email notification after successful image push to ECR
-                    emailext(
-                        subject: "Jenkins Job - Docker Image Pushed to ECR Successfully",
-                        body: "Hello,\n\nThe Docker image '${env.IMAGE_NAME}:${env.TAG}' has been successfully pushed to ECR.\n\nBest regards,\nJenkins",
-                        recipientProviders: [[$class: 'DevelopersRecipientProvider']],
-                        to: "adityanavaneethan98@gmail.com"
-                    )
-                }
-            }
         }
         stage('Static Code Analysis - SonarQube') {
             steps {
@@ -68,50 +57,11 @@ pipeline {
                     env.TRIVY_SCAN_RESULT = readFile('trivyscan.txt')
                 }
             }
-            post {
-                success{
-                emailext(
-                subject: "Trivy scan result",
-                body: "Hello, \n Trivy scan result in attachment \n Best regards, \n Jenkins",
-                recipientProviders: [[$class: 'DevelopersRecipientProvider']],
-                to: "adityanavaneethan98@gmail.com",
-                attachmentsPattern: 'trivyscan.txt'
-                )
-                }
-            }
-        }
-//         stage('Test SSH_KEY'){
-//             steps{
-//                 withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'SSH_KEY')]) {
-//                     sh 'echo "SSH Key loaded successfully"'
-//                 }
-//             }
-//         }
-        stage('SSH Steps Rocks!') {
-            steps {
-                script {
-                    // Store the SSH key securely and set appropriate permissions
-                    sh '''
-                        echo "$SSH_KEY" > ~/.ssh/id_rsa
-                        chmod 600 ~/.ssh/id_rsa
-                        # Ensure the known hosts are configured for SSH to avoid prompts
-                        ssh-keyscan -H 35.178.153.62 >> ~/.ssh/known_hosts
-                    '''
 
-                    // Run the SSH command in the background with minimal arguments
-                    sh '''
-                        nohup ssh -o StrictHostKeyChecking=no ubuntu@35.178.153.62 'whoami' &
-                    '''
-                }
-            }
-        }
         stage('Deploy to Environment test') {
             steps {
-                script {
-                    def targetHost = '35.178.153.62'
                     sshagent(['ec2-ssh-key']){
-                    sh "ssh -tt -o StrictHostKeyChecking=no ubuntu@${targetHost} whoami"
-                    }
+                    sh "ssh -tt -o StrictHostKeyChecking=no ubuntu@35.178.153.62 whoami"
                 }
             }
         }
