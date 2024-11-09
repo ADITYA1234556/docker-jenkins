@@ -124,6 +124,22 @@ EOF
         always {
             cleanWs()  // Clean up workspace after the build
         } //always
+        success {
+            emailext(
+                subject: "Jenkins Job - Docker Image Pushed to ECR Successfully",
+                body: "Hello,\n\nThe Docker image '${env.IMAGE_NAME}:${env.TAG}' has been successfully pushed to ECR.\n\nBest regards,\nJenkins",
+                recipientProviders: [[$class: 'DevelopersRecipientProvider']],
+                to: "adityanavaneethan98@gmail.com"
+            )
+        } //success
+        failure {
+            emailext(
+                subject: "Jenkins Job - Failure Notification",
+                body: "Hello,\n\nThe Jenkins job failed during the process. Please check the logs for details.\n\nBest regards,\nJenkins",
+                recipientProviders: [[$class: 'DevelopersRecipientProvider']],
+                to: "adityanavaneethan98@gmail.com"
+            )
+        } //failure
     } //post
 } //pipeline
 
