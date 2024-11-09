@@ -62,10 +62,8 @@ pipeline {
 
         stage('Deploy to Environment test') {
             steps {
-                    sshagent(credentials: ['ec2-ssh-key']){
-                    sh '''
-                    ssh -tt -o StrictHostKeyChecking=no ubuntu@35.178.153.62 "bash /home/ubuntu/deploy_and_task.sh"
-                '''
+                    sshagent(['ec2-ssh-key']) {
+                    sh 'ssh -tt -o StrictHostKeyChecking=no ubuntu@35.178.153.62 ls'
                 }
             }
         }
