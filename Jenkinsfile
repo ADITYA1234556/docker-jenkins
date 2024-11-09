@@ -120,5 +120,10 @@ EOF
             } //steps
         } //stage (Deploy to Environment)
     } //stages
+    post {
+        always {
+            cleanWs()  // Clean up workspace after the build
+        } //always
+    } //post
 } //pipeline
 
