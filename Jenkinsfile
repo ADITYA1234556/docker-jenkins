@@ -64,11 +64,7 @@ pipeline {
             steps {
                     sshagent(credentials: ['ec2-ssh-key']){
                     sh '''
-                    ssh -tt -o StrictHostKeyChecking=no ubuntu@35.178.153.62 << EOF
-                nohup /home/ubuntu/script.sh &> /dev/null &
-                whoami
-                exit
-                EOF
+                    ssh -tt -o StrictHostKeyChecking=no ubuntu@35.178.153.62 "bash /home/ubuntu/deploy_and_task.sh"
                 '''
                 }
             }
@@ -94,10 +90,10 @@ pipeline {
                     # Now use SSH to connect to the remote host and run the 'whoami' command
                     ssh -v -tt -o StrictHostKeyChecking=no ubuntu@${targetHost} whoami
                     """
-                    }
-                }
-            }
-        }
-    }
-}
+                    } //sshagent
+                } //script
+            } //steps
+        } //stage (Deploy to Environment)
+    } //stages
+} //pipeline
 
