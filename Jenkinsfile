@@ -8,8 +8,6 @@ pipeline {
         IMAGE_NAME = 'app-image'
         TAG = "${env.BRANCH_NAME}-${env.BUILD_ID}"
         AWS_REGION = "eu-west-2"
-        SSH_KEY = credentials('ec2-ssh-key')
-        MASKED_SSH_KEY = '/tmp/ssh-*'
     }
 
     stages {
@@ -17,31 +15,32 @@ pipeline {
             steps {
                 script{
                     sh 'git --version'
-                }
-            }
-        }
+                } //script
+            } //steps
+        } //stage
         stage('Checkout') {
             steps {
                 git branch: "${env.BRANCH_NAME}", url: 'https://github.com/ADITYA1234556/docker-jenkins.git', credentialsId: 'github-token'
-            }
-        }
+            } //steps
+        } //stage
         stage('Build Docker Image') {
             steps {
                 script {
                     docker.build("${env.ECR_REPO}:${env.TAG}")
-                }
-            }
-        }
+                } //script
+            } //steps
+        } //stage
         stage('Push to ECR') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'aws-ecr', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')])
+                withAWS(credentials: 'aws-credentials', region: "${AWS_REGION}")
                 {
-                    sh "aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin ${env.ECR_REPO}"
-                    sh "docker push ${env.ECR_REPO}:${env.TAG}" //for push we use with credentials
-                } //withCredentials
+                    sh "aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${env.ECR_REPO}"
+                    sh "docker push ${env.ECR_REPO}:${env.TAG}"
+                } //withAWS
             } //steps
-            post {
+                post {
                 success {
+                    // Send email notification after successful image push to ECR
                     emailext(
                         subject: "Jenkins Job - Docker Image Pushed to ECR Successfully",
                         body: "Hello,\n\nThe Docker image '${env.IMAGE_NAME}:${env.TAG}' has been successfully pushed to ECR.\n\nBest regards,\nJenkins",
