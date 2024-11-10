@@ -128,7 +128,7 @@
       docker rm ${IMAGE_NAME} || true
       docker run -d --name ${IMAGE_NAME} -p 8080:8080 -p 8090:8090 ${ECR_REPO}:${TAG}
     ```
-     
+   
 ## STEPS INVOLVED
 
 1. **STAGE 1: Verify git on Agent machine**
