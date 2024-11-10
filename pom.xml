@@ -14,9 +14,6 @@
         <sonar.projectName>Docker Jenkins Website</sonar.projectName>
         <sonar.projectVersion>1.0</sonar.projectVersion>
         <sonar.organization>ADITYA1234556</sonar.organization>
-
-        <sonar.sources>app1,app2</sonar.sources>
-        <sonar.inclusions>**/*.html,**/*.css,**/*.js,**/*.svg,**/*.png,**/*.jpg,**/*.jpeg</sonar.inclusions>
     </properties>
 
     <build>
